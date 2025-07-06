@@ -1,0 +1,26 @@
+
+//"Intuiti DajWymiar - include",2400,16,62
+/////////////////////////////////////////////////////////////////////////////////
+//////  Autor: Emilian Padniewski (C)										/////
+//////  2024 - Intuiti Sp. z o.o. tel +48 796977055							/////
+/////////////////////////////////////////////////////////////////////////////////
+
+//------------------------------------------------------
+string sub GetWymiarDK(long idDk, string sWymiar)
+//------------------------------------------------------
+GetWymiarDK = ""
+dispatch adoRs = "ADODB.Recordset"
+dispatch adoConn = GetAdoConnection()
+string 	sql = using "SELECT hm.dk.id, SSCommon.KL_VIEW_HMF_SalesInvoiceClassification.%s FROM SSCommon.KL_VIEW_HMF_SalesInvoiceClassification left join hm.dk on hm.dk.id = SSCommon.KL_VIEW_HMF_SalesInvoiceClassification.id where hm.dk.id = %l ", sWymiar, idDk
+//message sql
+	adoRS.Open(sql, adoConn)
+	while !adoRs.eof()
+			if adoRs.Fields(sWymiar).Value != "" then
+				GetWymiarDk = adoRs.Fields(sWymiar).Value
+			endif
+		adoRs.MoveNext
+	wend
+	adoRS.Close()
+
+	//clipboard(0, sql)
+endsub
